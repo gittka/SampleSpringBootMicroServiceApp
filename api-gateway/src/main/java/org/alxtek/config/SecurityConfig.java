@@ -10,7 +10,7 @@ import org.springframework.security.web.server.SecurityWebFilterChain;
 @Configuration
 @EnableWebFluxSecurity
 public class SecurityConfig {
-    // The last code line enables the ressource server capabilities of the gateway.
+    // The last code line enables the resource server capabilities of the gateway.
     @Bean
     public SecurityWebFilterChain springSecurityFilterChain(ServerHttpSecurity serverHttpSecurity) {
         serverHttpSecurity.csrf(ServerHttpSecurity.CsrfSpec::disable)
