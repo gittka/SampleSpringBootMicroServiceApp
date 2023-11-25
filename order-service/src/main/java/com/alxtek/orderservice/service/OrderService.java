@@ -22,7 +22,7 @@ public class OrderService {
     private final OrderRepository orderRepository;
     private final WebClient.Builder getWebClientBuilder;
 
-    public void createOrder(OrderDtoRequest orderDtoRequest){
+    public String createOrder(OrderDtoRequest orderDtoRequest){
         Order order = new Order();
         order.setOrderNumber(UUID.randomUUID().toString());
         List<OrderLineItems> orderLineItems = orderDtoRequest.getOrderLineItemsDtoRequests()
@@ -49,6 +49,7 @@ public class OrderService {
 
         if (allProductsInSstock){
             orderRepository.save(order);
+            return "Order placed successfully";
         } else {
             throw new IllegalArgumentException("Order failed");
         }
