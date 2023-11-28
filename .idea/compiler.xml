@@ -11,15 +11,17 @@
         <module name="product-service" />
         <module name="order-service" />
         <module name="inventory-service" />
-        <module name="dicvovery-server" />
+        <module name="dicovery-server" />
+        <module name="notification-service" />
       </profile>
     </annotationProcessing>
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
       <module name="api-gateway" options="-parameters" />
-      <module name="dicvovery-server" options="-parameters" />
+      <module name="dicovery-server" options="-parameters" />
       <module name="inventory-service" options="-parameters" />
+      <module name="notification-service" options="-parameters" />
       <module name="order-service" options="-parameters" />
       <module name="product-service" options="-parameters" />
     </option>

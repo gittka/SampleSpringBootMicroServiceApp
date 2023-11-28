@@ -3,10 +3,13 @@ package com.alxtek.orderservice.service;
 import com.alxtek.orderservice.dto.InventoryResponse;
 import com.alxtek.orderservice.dto.OrderDtoRequest;
 import com.alxtek.orderservice.dto.OrderLineItemsDtoRequest;
+import com.alxtek.orderservice.event.OrderPlacedEvent;
 import com.alxtek.orderservice.model.Order;
 import com.alxtek.orderservice.model.OrderLineItems;
 import com.alxtek.orderservice.repository.OrderRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.reactive.function.client.WebClient;
@@ -21,6 +24,7 @@ import java.util.UUID;
 public class OrderService {
     private final OrderRepository orderRepository;
     private final WebClient.Builder getWebClientBuilder;
+    private final KafkaTemplate<String, OrderPlacedEvent> kafkaTemplate;
 
     public String createOrder(OrderDtoRequest orderDtoRequest){
         Order order = new Order();
@@ -49,6 +53,7 @@ public class OrderService {
 
         if (allProductsInSstock){
             orderRepository.save(order);
+            kafkaTemplate.send("notification-topic", new OrderPlacedEvent(order.getOrderNumber()));
             return "Order placed successfully";
         } else {
             throw new IllegalArgumentException("Order failed");
